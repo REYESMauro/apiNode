@@ -1,0 +1,8 @@
+import mongoose from "mongoose";
+let Schema = mongoose.Schema;
+
+let moto_brandSchema = Schema({
+    name: String,
+});
+
+export default mongoose.model('moto_brand', moto_brandSchema, 'moto_brand');

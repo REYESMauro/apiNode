@@ -1,0 +1,13 @@
+import { Router } from 'express'
+import Moto_brandController from '../controllers/moto_brand.js';
+
+
+const routers = Router()
+
+routers.get('/', Moto_brandController.getMoto_brand)
+routers.get('/:id?', Moto_brandController.getMoto_brand)
+routers.post('/save', Moto_brandController.saveMoto_brand)
+routers.put('/edit/:id?', Moto_brandController.updateMoto_brand)
+routers.delete('/delete/:id?', Moto_brandController.deleteMoto_brand)
+
+export default routers

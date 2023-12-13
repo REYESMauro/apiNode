@@ -1,0 +1,63 @@
+import Moto_brand  from '../models/moto_brand.js'
+const controller = {
+    getMoto_brand: function (req, res) {
+        Moto_brand.find({}).exec()
+            .then(moto_brandList => {
+                if (!moto_brandList) return res.status(404).send({ message: "No data  found" })
+                return res.status(200).json(motorcyclesList)
+            })
+            .catch(err => res.status(500).send({ message: `Error: ${err}` }))
+    },
+    getMoto_brand: function (req, res) {
+        let moto_brandId = req.params.id
+        if (moto_brandId == null) return res.status(404).send({ message: "moto_brand not found" })
+
+        Moto_brand.findById(Moto_brand).exec()
+            .then(data => {
+                if (!data) return res.status(404).send({ message: "Moto_brand not found" })
+                return res.status(200).json(data)
+            })
+            .catch(err => res.status(500).send({ message: `Internal error-> ${err}` }))
+    },
+    saveMoto_brand: function (req, res) {
+        let moto_brand = new Moto_brand()
+        const { name} = req.body
+        if (name) {
+            moto_brand.name = name
+            
+
+            moto_brand.save()
+                .then(storedMoto_brand => {
+                    storedMoto_brand
+                        ? res.status(200).json({ moto_brand: storedMoto_brand })
+                        : res.status(404).send({ message: "Error saving the document" })
+                })
+                .catch(error => res.status(500).send({ message: "Error while saving the document" }))
+        } else {
+            return res.status(400).send({ message: "Data is not right" })
+        }
+    },
+    updateMoto_brand: function (req, res) {
+        let moto_brandId = req.params.id
+        let update = req.body
+
+        Moto_brand.findByIdAndUpdate(moto_brandId, update, { returnDocument: 'after' })
+            .then(updatedMoto_brand => {
+                if (!updatedMoto_brand) return res.status(404).send({ message: "The document does not exist" })
+                return res.status(200).send({ moto_brand: updatedMoto_brand })
+            })
+            .catch(error => res.status(500).send({ message: `Error while updating ${error}` }))
+    },
+    deleteMoto_brand: function (req, res) {
+        let Moto_brandId = req.params.id
+
+        Moto_brand.findByIdAndRemove(Moto_brandId)
+            .then(removedMoto_brand => {
+                if (!removedMoto_brand) return res.status(404).send({ message: "The Moto_brand does not exist" })
+                return res.status(200).send({ moto_brand: removedMoto_brand })
+            })
+            .catch(err => res.status(500).send({ message: "Error while deleting" }))
+    }
+}
+
+export default controller
